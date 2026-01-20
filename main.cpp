@@ -28,7 +28,7 @@ void loop() {
   float raw_average = (float)raw_amp_out_sum / 512.0; // valor médio
   I = 0.0015355*raw_average + 0.24712;
 
-  if (raw_average < 50) I = 0;
+  if (raw_average < 30) I = 0;
 
   Serial.print("Corrente = ");
   Serial.print(I, 3);
