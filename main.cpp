@@ -26,7 +26,8 @@ void loop() {
       delayMicroseconds(100);
   }
   float raw_average = (float)raw_amp_out_sum / 512.0; // valor médio
-  I = 0.0015355*raw_average + 0.24712;
+
+  I = 0.001580*raw_average + 0.24878; // equação de calibração encontrada experimentalmente
 
   if (raw_average < 30) I = 0;
 
