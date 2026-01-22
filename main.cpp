@@ -1,16 +1,21 @@
 #include <Arduino.h>
 #include <driver/adc.h>
-#include <iostream>
 
 #define RELE 12
-#define amp_out 32
+#define carga1 32
+#define carga2 33
+#define carga3 25
+#define RX2_PIN 16
+#define TX2_PIN 17
 
 void setup() {
+
     pinMode(RELE, OUTPUT);
     analogReadResolution(12);
     analogSetAttenuation(ADC_11db);
-    Serial.begin(9600);
 
+    //Serial.begin(115200);
+    Serial2.begin(115200, SERIAL_8N1, RX2_PIN, TX2_PIN);
 }
 
 void loop() {
@@ -18,27 +23,27 @@ void loop() {
   digitalWrite(RELE, HIGH); //high relé fechado, low relé aberto
   //digitalWrite(RELE, LOW); //high relé fechado, low relé aberto 
 
-  uint32_t raw_amp_out_sum=0;
-  float I=0;
+  uint32_t adc_carga1=0, adc_carga2=0, adc_carga3=0;
 
-  for(uint16_t i=0; i<512; i++) { // média de 512 amostras
-      raw_amp_out_sum += analogRead(amp_out); 
-      delayMicroseconds(100);
+  for(uint16_t i=0; i<500; i++) { // média de 500 amostras
+
+      adc_carga1 += analogRead(carga1);
+      adc_carga2 += analogRead(carga2);
+      adc_carga3 += analogRead(carga3);
+
+      delayMicroseconds(50);
   }
-  float raw_average = (float)raw_amp_out_sum / 512.0; // valor médio
 
-  I = 0.001580*raw_average + 0.24878; // equação de calibração encontrada experimentalmente
+    adc_carga1 = adc_carga1 / 500;
+    adc_carga2 = adc_carga2 / 500;
+    adc_carga3 = adc_carga3 / 500;
 
-  if (raw_average < 30) I = 0;
-
-  Serial.print("Corrente = ");
-  Serial.print(I, 3);
-  Serial.println(" A");
-
-  Serial.print("Valor bruto do ADC = ");
-  Serial.println(raw_average);
-
-  Serial.println("-----------------------");
+    // pacote com formato: adc1,adc2,adc3
+    Serial2.print(adc_carga1);
+    Serial2.print(",");      
+    Serial2.print(adc_carga2);
+    Serial2.print(",");      
+    Serial2.println(adc_carga3); 
 
   delay(1000);
   
