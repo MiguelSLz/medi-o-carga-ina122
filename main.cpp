@@ -45,6 +45,6 @@ void loop() {
     Serial2.print(",");      
     Serial2.println(adc_carga3); 
 
-  delay(1000);
+  delay(50);
   
 }
