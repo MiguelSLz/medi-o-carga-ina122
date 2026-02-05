@@ -28,8 +28,8 @@ void setup() {
     analogReadResolution(12);
     analogSetAttenuation(ADC_11db);
 
-    Serial.begin(9600);
-    //Serial2.begin(115200, SERIAL_8N1, RX2_PIN, TX2_PIN);
+    //Serial.begin(9600);
+    Serial2.begin(115200, SERIAL_8N1, RX2_PIN, TX2_PIN);
 }
 
 void loop() {
@@ -79,12 +79,12 @@ void loop() {
         uint32_t media4 = soma_c4 / N_AMOSTRAS;
 
         // pacote com formato: adc1,adc2,adc3
-        Serial.print(media1);
-        Serial.print(",");      
-        Serial.print(media2);
-        Serial.print(",");
-        Serial.print(media3);
-        Serial.print(",");        
-        Serial.println(media4); 
+        Serial2.print(media1);
+        Serial2.print(",");      
+        Serial2.print(media2);
+        Serial2.print(",");
+        Serial2.print(media3);
+        Serial2.print(",");        
+        Serial2.println(media4); 
     }
 }
